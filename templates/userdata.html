@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html ng-app="plunker" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="static/controluser.js"></script>
+  <style >
+  .container{
+    margin-top: 70px;
+  }
+	input{
+  	margin-top:10px;
+  	margin-right:10px; 
+		margin-bottom: 10px;
+  }
+  #button1{
+  	margin-right:  150px;
+	}
+	#adduser{
+    margin-left:  900px;
+	}
+  .usermodal{
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .heading {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+  }
+ 	</style>
+</head>
+<body >
+	<div class="container">
+    <div ng-controller="userModalCtrl" >
+    <script type="text/ng-template" id="addModalContent.html" class="myModal">
+        <div class="modal-header model-grey-color">
+            <h4 >Add User Information</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()">
+              <span aria-hidden="true">×</span></button>
+        </div>      
+        <div class="usermodal">
+        <label>First Name:<sup class="sup-color">*</sup></label>
+        <input type="text" class="form-control" id="first_name"  pattern="[A-Za-z]+"ng-model="first_name" >
+
+        <label>Last Name:<sup class="sup-color">*</sup></label>
+        <input type="text" class="form-control" id="last_name" pattern="[A-Za-z]+" ng-model="last_name" >
+
+        <label>Email:<sup class="sup-color">*</sup></label>
+        <input type="text" class="form-control" id="email" ng-model="email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" >
+
+        <label>Phone:<sup class="sup-color">*</sup></label>
+        <input type="text" class="form-control" maxlength="10" id="phone" ng-model="phone" >
+
+        <label>About:</label>
+        <input type="text"  class="form-control" id="about" ng-model="about" >
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="validateForm()">Submit</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    {%for row in user%}
+    <script type="text/ng-template" id="updateModalContent.html" class="myModal" >
+              <div class="modal-header model-grey-color">
+                  <h4 >Update User Information</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+            
+              </div>
+              <div class="usermodal">
+    					<label>First Name:<sup class="sup-color">*</sup></label>
+							<input type="hidden" ng-model="row.user_id" id="id_{{row.user_id}}" value="row.user_id">
+							<input type="text" class="form-control" ng-model="row.fname" id="first_name_{{row.user_id}}" pattern="[A-Za-z]+"  value="row.fname" >
+
+							<label>Last Name:<sup class="sup-color">*</sup></label>
+		
+							<input type="text" class="form-control" ng-model="row.lname" id="last_name_{{row.user_id}}" value="row.lname" pattern="[A-Za-z]+" >
+
+							<label>Email:<sup class="sup-color">*</sup></label>
+							<input type="email" class="form-control" ng-model="row.email" id="email_{{row.user_id}}" value="row.email" >
+
+							<label>Phone:<sup class="sup-color">*</sup></label>
+							<input type="text" class="form-control" maxlength="10" ng-model="row.phone" id="phone_{{row.user_id}}" value="row.phone">
+
+							<label>About:</label>
+							<input type="text"  class="form-control"ng-model="row.about" id="about_{{row.user_id}}" value="row.about">
+              </div>
+
+              <div class="modal-footer">
+                  <button class="btn btn-primary" type="sbumit" id="update" ng-click="updateuser()">Update</button>
+                  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+              </div>
+							 
+    </script>
+    {%endfor%}
+    
+    <button id=adduser class="btn btn-primary btn-margin-left" ng-click="addusermodal()">Add User</button>
+    <a href="{{url_for('adminlogout')}}">
+    <button id=logout class="btn btn-primary btn-margin-left" ng-click="logout()">Logout</button></a>
+
+
+
+<table class="table ">
+	<thead class="heading">
+	
+		<th>Id</th>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th>Email</th>
+		<th>Phone</th>
+		<th>About</th>
+		<th>Action</th>
+		
+			
+	</thead>
+		<tbody>
+			<tr>
+
+			{% for row in user%}
+			<td>{{row.user_id}}</td>
+			<td>{{row.fname}}</td>
+			<td>{{row.lname}}</td>
+			<td>{{row.email}}</td>
+			<td>{{row.mobileno1}}</td>
+			<td>{{row.about}}</td>
+			<td>
+    			<button type="button" class="btn btn-warning " ng-click="update({{row.user_id}})">Edit</button>
+    			<button type="button" class="btn btn-danger" ng-click="deletRecord({{row.user_id}})">Delete</button>
+      		</td>
+
+			</tr>
+		
+               {% endfor  %}
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

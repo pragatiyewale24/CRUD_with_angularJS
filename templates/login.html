@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="plunker" >
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="static/controladmin.js"></script>
+<style>
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+#login,#signup{
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.container
+{
+  margin-left: 600px;
+  width: 500px;
+}
+.adminmodal{
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+</style>
+
+</head>
+<body>
+<center><h1>Login Form</h1></center>
+  <div class="container">
+    <div ng-controller="adminModalCtrl">
+      <script type="text/ng-template" id="addModalContent.html" class="myModal" > 
+        <div class="modal-header model-grey-color">
+          <h4>Add Admin</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="adminmodal">
+          <label>Username:</label>
+          <input type="text" class="form-control" id="username" ng-model="username" pattern="[modaleditA-Za-z]+" >
+
+          <label>Password:</label>
+          <input type="password" class="form-control" ng-model="password1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="password1"  >
+
+          <label>Confirm_Password:</label>
+          <input type="password" class="form-control" ng-model="confirm_pass" pattern="myModal(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="confirm_pass" >
+      </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="validateForm()">Submit</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+      </script>
+      <label><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" id="username_login" ng-model="username_login" autocomplete="off" required>
+
+      <label><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" id="password1_login" ng-model="password1_login"required>
+      <button type="button" id="login" ng-click="login()">Login</button>
+      <button type="button" id="signup" ng-click="register()">SignUp</button>
+   </div>
+      
+    </div>
+    
+</body>
+</html>

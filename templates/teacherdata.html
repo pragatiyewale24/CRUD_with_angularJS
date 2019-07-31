@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="static/controlteacher.js"></script>
+	<style >
+	.container{
+		margin-top: 70px;
+  	}
+	input{
+  		margin-top:10px;
+  		margin-right:10px; 
+		margin-bottom: 10px;
+	}
+  	#button1{
+  		margin-right:  150px;
+	}
+	#addteacher{
+    	margin-left:  900px;
+	}
+	.teachermodal{
+  		margin-left: 50px;
+ 		margin-right: 50px;
+	}
+	.heading {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+    text-align: center;
+  }
+  	</style>
+</head>
+<body>
+	<div class="container">
+    <div ng-controller="teacherModalCtrl" >
+    <script type="text/ng-template" id="addModalContent.html" class="myModal" >	
+    	<div class="modal-header model-grey-color">
+    		<h4>Add Teacher Information</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="teachermodal">
+	    	<label>Department Name:<sup class="sup-color">*</sup></label>
+			<input type="text" class="form-control" id="department_name" ng-model="department_name" >
+
+			<label>Is_hod:<sup class="sup-color">*</sup></label><br>
+			<input type="radio" id="is_hod1" ng-model="is_hod1" name="is_hod" value="1"> Yes
+	  		<input type="radio" id="is_hod0" ng-model="is_hod0" name="is_hod" value="0"> No<br>
+
+			<label>teaching_subject:<sup class="sup-color">*</sup></label>
+			<input type="text" class="form-control" ng-model="teaching_subject" id="teaching_subject" >
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="validateForm()">Submit</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    {% for row in teacher%}
+    <script type="text/ng-template" id="updateModalContent.html" class="myModal" >
+    	<div class="modal-header model-grey-color">
+    		<h4 >Update Teacher Information</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="teachermodal">
+	    	<label>Department Name:<sup class="sup-color">*</sup></label>
+			<input type="hidden" ng-model="row.teacher_id" id="id_{{row.teacher_id}}" value="{{row.teacher_id}}">
+			<input type="text" class="form-control" ng-model="row.department_name" id="department_name_{{row.teacher_id}}" value="{{row.department_name}}"  pattern="[A-Za-z]+" >
+												
+			<label>Is_hod:<sup class="sup-color">*</sup></label><br>
+			<input type="radio" ng-model="row.is_hod" id="is_hod1_{{row.teacher_id}}" name="is_hod" value="1"  > Yes
+			<input type="radio" ng-model="row.is_hod" id="is_hod0_{{row.teacher_id}}" name="is_hod" value="0" > No<br>
+
+			<label>teaching_subject:<sup class="sup-color">*</sup></label>
+			<input type="text" class="form-control" ng-model="row.teaching_subject" id="teaching_subject_{{row.teacher_id}}" value="{{row.teaching_subject}}" >
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" type="sbumit" id="update" ng-click="updateteacher()">Update</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    {% endfor%}
+    <button id=addteacher class="btn btn-primary btn-margin-left" ng-click="addteachermodal()">Add Teacher</button>
+    <a href="{{url_for('adminlogout')}}">
+    <button id=logout class="btn btn-primary btn-margin-left" ng-click="logout()">Logout</button></a>
+    <table class="table ">
+    	<thead class="heading">
+    		<th>Id</th>
+			<th>department_name</th>
+			<th>is_hod</th>
+			<th>teaching_subject</th>
+			<th>Action</th>
+		</thead>
+		<tbody class="tdata">
+			<tr>
+				{% for row in teacher%}
+				<td>{{row.teacher_id}}</td>
+				<td>{{row.department_name}}</td>
+				<td>{{row.is_hod}}</td>
+				<td>{{row.teaching_subject }}</td>
+				<td>
+					<button type="button" class="btn btn-warning " ng-click="update({{row.teacher_id}})">Edit</button>
+    				<button type="button" class="btn btn-danger" ng-click="deletRecord({{row.teacher_id}})">Delete</button>
+    			</td>
+    			
+			</tr>
+			{% endfor%}
+		</tbody>
+	</table>
+</div>
+</div>
+</body>
+</html>
+
+
+
